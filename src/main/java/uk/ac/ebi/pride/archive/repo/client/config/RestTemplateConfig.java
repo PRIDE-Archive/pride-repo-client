@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.repoclient.priderepo.config;
+package uk.ac.ebi.pride.archive.repo.client.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

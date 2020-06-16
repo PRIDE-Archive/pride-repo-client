@@ -17,6 +17,6 @@ variables:
 deploy:
   stage: deploy
   script:
-    - mvn $MAVEN_CLI_OPTS deploy
+    - mvn $MAVEN_CLI_OPTS clean build deploy
   only:
     - master
