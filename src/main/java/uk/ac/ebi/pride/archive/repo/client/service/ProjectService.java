@@ -6,10 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.archive.repo.models.project.Project;
-import uk.ac.ebi.pride.archive.repo.models.project.ProjectSummary;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,7 +30,6 @@ public class ProjectService {
         this.restClientService = restClientService;
     }
 
-
     public Project findById(Long id) throws IOException {
         final String url = URL_PPROJECT_PATH + "/findById/{id}";
         // set uri parameters
@@ -38,19 +37,8 @@ public class ProjectService {
         params.put("id", id.toString());
 
         String response = restClientService.sendGetRequestWithRetry(url, params);
-        Project project = objectMapper.readValue(response, Project.class);
-        return project;
-    }
-
-    public ProjectSummary findByIdSummary(Long id) throws JsonProcessingException {
-        final String url = URL_PPROJECT_PATH + "/findByIdSummary/{id}";
-        // set uri parameters
-        Map<String, String> params = new HashMap<>();
-        params.put("id", id.toString());
-
-        String response = restClientService.sendGetRequestWithRetry(url, params);
-        ProjectSummary project = objectMapper.readValue(response, ProjectSummary.class);
-        return project;
+//        System.out.println(response);
+        return objectMapper.readValue(response, Project.class);
     }
 //
 //

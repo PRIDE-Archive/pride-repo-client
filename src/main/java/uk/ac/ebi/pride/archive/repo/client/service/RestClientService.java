@@ -73,5 +73,4 @@ public class RestClientService {
         return response.getBody();
     }
 
-
 }
