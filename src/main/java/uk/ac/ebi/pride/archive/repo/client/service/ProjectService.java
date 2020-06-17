@@ -1,6 +1,5 @@
 package uk.ac.ebi.pride.archive.repo.client.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +8,8 @@ import uk.ac.ebi.pride.archive.repo.models.project.Project;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author Suresh Hewapathirana
@@ -30,7 +29,7 @@ public class ProjectService {
         this.restClientService = restClientService;
     }
 
-    public Project findById(Long id) throws IOException {
+    public Optional<Project> findById(Long id) throws IOException {
         final String url = URL_PPROJECT_PATH + "/findById/{id}";
         // set uri parameters
         Map<String, String> params = new HashMap<>();
@@ -38,7 +37,11 @@ public class ProjectService {
 
         String response = restClientService.sendGetRequestWithRetry(url, params);
 //        System.out.println(response);
-        return objectMapper.readValue(response, Project.class);
+        if (response == null || response.equalsIgnoreCase("null")) {
+            return Optional.empty();
+        }
+        Project project = objectMapper.readValue(response, Project.class);
+        return Optional.ofNullable(project);
     }
 //
 //
