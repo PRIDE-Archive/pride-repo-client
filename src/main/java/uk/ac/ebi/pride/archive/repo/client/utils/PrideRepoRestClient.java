@@ -1,44 +1,34 @@
-package uk.ac.ebi.pride.archive.repo.client.service;
+package uk.ac.ebi.pride.archive.repo.client.utils;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Retryable;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 import java.util.Map;
 
-/**
- * @author Suresh Hewapathirana
- */
-
 @Slf4j
-@Service
-public class RestClientService {
+public class PrideRepoRestClient {
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
+    private final String baseUrl;
+    private final String apiKeyName;
+    private final String apiKeyValue;
 
-    @Value("${pride-repo-api.base-url}")
-    private String baseUrl;
+    public PrideRepoRestClient(String baseUrl, String apiKeyName, String apiKeyValue) {
+        this.restTemplate = new RestTemplate();
+        this.baseUrl = baseUrl;
+        this.apiKeyName = apiKeyName;
+        this.apiKeyValue = apiKeyValue;
+    }
 
-    @Value("${pride-repo-api.key.name}")
-    private String apiKeyName;
-
-    @Value("${pride-repo-api.key.value}")
-    private String apiKeyValue;
-
-    @Retryable(backoff = @Backoff(multiplier = 2))
+    //TODO retry logics
     public String sendGetRequestWithRetry(String url, Map<String, String> params) {
         return makeGetRequest(url, params);
     }
 
-    @Retryable(backoff = @Backoff(multiplier = 2))
+    //TODO retry logics
     public String sendGetRequestWithRetry(String url) {
         return makeGetRequest(url, null);
     }
@@ -61,7 +51,7 @@ public class RestClientService {
             } else {
                 response = restTemplate.exchange(baseUrl + url, HttpMethod.GET, entity, String.class, params);
             }
-            if(response.getStatusCode() != HttpStatus.OK) {
+            if (response.getStatusCode() != HttpStatus.OK) {
                 String s = "Received invalid response for : " + url + " : " + response;
                 log.error(s);
                 throw new IllegalStateException(s);

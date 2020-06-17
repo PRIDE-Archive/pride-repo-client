@@ -1,9 +1,8 @@
-package uk.ac.ebi.pride.archive.repo.client.service;
+package uk.ac.ebi.pride.archive.repo.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import uk.ac.ebi.pride.archive.repo.client.utils.PrideRepoRestClient;
 import uk.ac.ebi.pride.archive.repo.models.project.Project;
 
 import java.io.IOException;
@@ -11,31 +10,26 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-/**
- * @author Suresh Hewapathirana
- */
-@Service
 @Slf4j
-public class ProjectService {
+public class ProjectRepoClient {
 
     private final ObjectMapper objectMapper;
-    private final RestClientService restClientService;
+    private final PrideRepoRestClient prideRepoRestClient;
 
-    private static final String URL_PPROJECT_PATH = "/project";
+    private static final String PROJECT_URL_PATH = "/project";
 
-    @Autowired
-    public ProjectService(ObjectMapper objectMapper, RestClientService restClientService) {
+    ProjectRepoClient(ObjectMapper objectMapper, PrideRepoRestClient prideRepoRestClient) {
         this.objectMapper = objectMapper;
-        this.restClientService = restClientService;
+        this.prideRepoRestClient = prideRepoRestClient;
     }
 
     public Optional<Project> findById(Long id) throws IOException {
-        final String url = URL_PPROJECT_PATH + "/findById/{id}";
+        final String url = PROJECT_URL_PATH + "/findById/{id}";
         // set uri parameters
         Map<String, String> params = new HashMap<>();
         params.put("id", id.toString());
 
-        String response = restClientService.sendGetRequestWithRetry(url, params);
+        String response = prideRepoRestClient.sendGetRequestWithRetry(url, params);
 //        System.out.println(response);
         if (response == null || response.equalsIgnoreCase("null")) {
             return Optional.empty();
