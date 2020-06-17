@@ -2,14 +2,20 @@ package uk.ac.ebi.pride.archive.repo.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import uk.ac.ebi.pride.archive.repo.client.utils.PrideRepoRestClient;
 import uk.ac.ebi.pride.archive.repo.models.project.Project;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * This class handles all the methods related to Project
+ */
 @Slf4j
 public class ProjectRepoClient {
 
@@ -26,161 +32,104 @@ public class ProjectRepoClient {
     public Optional<Project> findById(Long id) throws IOException {
         final String url = PROJECT_URL_PATH + "/findById/{id}";
         // set uri parameters
-        Map<String, String> params = new HashMap<>();
-        params.put("id", id.toString());
+        Map<String, String> uriParams = new HashMap<>();
+        uriParams.put("id", id.toString());
 
-        String response = prideRepoRestClient.sendGetRequestWithRetry(url, params);
-//        System.out.println(response);
+        String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
         if (response == null || response.equalsIgnoreCase("null")) {
             return Optional.empty();
         }
         Project project = objectMapper.readValue(response, Project.class);
         return Optional.ofNullable(project);
     }
-//
-//
-//    public ResponseEntity<String> count() {
-//        final String url = "/count";
-//        ResponseEntity<String> response = requestClient.makeGetRequest(url, null);
-//        return response;
-//    }
-//
-//
-//    public ResponseEntity<String> getAllAccessions() {
-//        final String url = "/getAllAccessions";
-//        ResponseEntity<String> response = requestClient.makeGetRequest(url, null);
-//        return response;
-//    }
-//
-//
-//    public ResponseEntity<String> getAllPublicAccessions() {
-//        final String url = "/getAllPublicAccessions";
-//        ResponseEntity<String> response = requestClient.makeGetRequest(url, null);
-//        return response;
-//    }
-//
-//
-//    public ResponseEntity<String> findByAccession(String accession) {
-//
-//        final String url = "/project/findByAccession/{accession}";
-//
-//        // set uri parameters
-//        Map<String, String> params = new HashMap<>();
-//        params.put("accession", accession);
-//
-//        ResponseEntity<String> response = requestClient.makeGetRequest(url, params);
-//        System.out.println(response.getBody());
-//        return response;
-//    }
-//
-//
-//    public ResponseEntity<String> findByAccessionSummary(String accession) {
-//
-//        final String url = "/findByAccessionSummary/{accession}";
-//
-//        // set uri parameters
-//        Map<String, String> params = new HashMap<>();
-//        params.put("accession", accession);
-//
-//        ResponseEntity<String> response = requestClient.makeGetRequest(url, params);
-//        System.out.println(response.getBody());
-//        return response;
-//    }
-//
-//
-//    public ResponseEntity<String> findBySubmitterIdAndIsPublic(Long submitterId, Boolean isPublic) {
-//        final String url = "/findBySubmitterIdAndIsPublic";
-//
-//        // set uri parameters
-//        Map<String, String> params = new HashMap<>();
-//        params.put("submitterId", submitterId.toString());
-//        params.put("isPublic", isPublic.toString());
-//
-//        ResponseEntity<String> response = requestClient.makeGetRequest(url, null);
-//        return response;
-//    }
-//
-//
-//    public ResponseEntity<String> findBySubmitterIdAndIsPublicSummary(Long submitterId, Boolean isPublic) {
-//        final String url = "/findBySubmitterIdAndIsPublicSummary";
-//
-//        // set uri parameters
-//        Map<String, String> params = new HashMap<>();
-//        params.put("submitterId", submitterId.toString());
-//        params.put("isPublic", isPublic.toString());
-//
-//        ResponseEntity<String> response = requestClient.makeGetRequest(url, null);
-//        return response;
-//    }
-//
-//
-//    public ResponseEntity<String> findBySubmitterId(Long submitterId) {
-//        final String url = "/findBySubmitterId/{submitterId}";
-//
-//        // set uri parameters
-//        Map<String, String> params = new HashMap<>();
-//        params.put("submitterId", submitterId.toString());
-//
-//        ResponseEntity<String> response = requestClient.makeGetRequest(url, params);
-//        System.out.println(response.getBody());
-//        return response;
-//    }
-//
-//
-//    public ResponseEntity<String> findBySubmitterIdSummary(Long submitterId) {
-//
-//        final String url = "/findBySubmitterIdSummary/{submitterId}";
-//
-//        // set uri parameters
-//        Map<String, String> params = new HashMap<>();
-//        params.put("submitterId", submitterId.toString());
-//
-//        ResponseEntity<String> response = requestClient.makeGetRequest(url, params);
-//        System.out.println(response.getBody());
-//        return response;
-//    }
-//
-//
-//    public ResponseEntity<String> findByReviewer(String user_aap_ref) {
-//
-//        final String url = "/findByReviewer/{user_aap_ref}";
-//
-//        // set uri parameters
-//        Map<String, String> params = new HashMap<>();
-//        params.put("user_aap_ref", user_aap_ref);
-//
-//        ResponseEntity<String> response = requestClient.makeGetRequest(url, params);
-//        System.out.println(response.getBody());
-//        return response;
-//    }
-//
-//
-//    public ResponseEntity<String> findByReviewerSummary(String user_aap_ref) {
-//
-//        final String url = "/findByReviewerSummary/{user_aap_ref}";
-//
-//        // set uri parameters
-//        Map<String, String> params = new HashMap<>();
-//        params.put("user_aap_ref", user_aap_ref);
-//
-//        ResponseEntity<String> response = requestClient.makeGetRequest(url, params);
-//        System.out.println(response.getBody());
-//        return response;
-//    }
-//
-//
-//    public ResponseEntity<String> findAllAccessionsChanged() {
-//        final String url = "/findAllAccessionsChanged";
-//        ResponseEntity<String> response = requestClient.makeGetRequest(url, null);
-//        return response;
-//    }
-//
-//
-//    public List<List<String>> findMonthlySubmissions() throws JsonProcessingException {
-//        final String url = "/findMonthlySubmissions";
-//        String response = restClientService.sendGetRequestWithRetry(url);
-//        List list = objectMapper.readValue(response, List<List<String>>.class);
-//        return response;
-//    }
+
+    public Long count() throws IOException {
+        final String url = PROJECT_URL_PATH + "/count";
+        String response = prideRepoRestClient.sendGetRequestWithRetry(url, null,null);
+        Long count = objectMapper.readValue(response, Long.class);
+        return count;
+    }
+
+    public List<String> getAllAccessions() throws IOException {
+        final String url = PROJECT_URL_PATH + "/getAllAccessions";
+        String response = prideRepoRestClient.sendGetRequestWithRetry(url, null, null);
+        List<String> accessions = objectMapper.readValue(response, List.class);
+        return accessions;
+    }
+
+    public List<String> getAllPublicAccessions() throws IOException {
+        final String url = PROJECT_URL_PATH + "/getAllPublicAccessions";
+        String response = prideRepoRestClient.sendGetRequestWithRetry(url, null, null);
+        List<String> accessions =  objectMapper.readValue(response, List.class);
+        return accessions;
+    }
+
+    public Project findByAccession(String accession) throws IOException {
+
+        final String url = PROJECT_URL_PATH + "/findByAccession/{accession}";
+
+        // set uri parameters
+        Map<String, String> uriParams = new HashMap<>();
+        uriParams.put("accession", accession);
+
+        String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
+        Project project = objectMapper.readValue(response, Project.class);
+        return project;
+    }
+
+    public List<String> findAllAccessionsChanged() throws IOException {
+        final String url = PROJECT_URL_PATH + "/findAllAccessionsChanged";
+        String response = prideRepoRestClient.sendGetRequestWithRetry(url, null, null);
+        List<String> accessions =  objectMapper.readValue(response, List.class);
+        return accessions;
+    }
+
+    public List<List<String>> findMonthlySubmissions() throws IOException {
+        final String url = PROJECT_URL_PATH + "/findMonthlySubmissions";
+        String response = prideRepoRestClient.sendGetRequestWithRetry(url, null, null);
+        List<List<String>> monthlySubmissions =  objectMapper.readValue(response, List.class);
+        return monthlySubmissions;
+    }
+
+    public List<Project> findBySubmitterIdAndIsPublic(Long submitterId, Boolean isPublic) throws IOException {
+
+        final String url = PROJECT_URL_PATH + "/findBySubmitterIdAndIsPublic";
+
+        // set query parameters
+        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+        queryParams.add("submitterId", submitterId.toString());
+        queryParams.add("isPublic", isPublic.toString());
+
+
+        String response = prideRepoRestClient.sendGetRequestWithRetry(url, null, queryParams);
+        List<Project> projects = objectMapper.readValue(response, List.class);
+        return projects;
+    }
+
+    public List<Project> findBySubmitterId(Long submitterId) throws IOException {
+
+        final String url = PROJECT_URL_PATH + "/findBySubmitterId/{submitterId}";
+
+        // set uri parameters
+        Map<String, String> uriParams = new HashMap<>();
+        uriParams.put("submitterId", submitterId.toString());
+
+        String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
+        List<Project> projects = objectMapper.readValue(response, List.class);
+        return projects;
+    }
+
+    public List<Project> findByReviewer(String userAapRef) throws IOException {
+
+        final String url = PROJECT_URL_PATH + "/findByReviewer/{user_aap_ref}";
+
+        // set uri parameters
+        Map<String, String> uriParams = new HashMap<>();
+        uriParams.put("user_aap_ref", userAapRef);
+
+        String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
+        List<Project> projects = objectMapper.readValue(response, List.class);
+        return projects;
+    }
 }
 

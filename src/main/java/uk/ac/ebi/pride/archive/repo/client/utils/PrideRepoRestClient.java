@@ -2,12 +2,18 @@ package uk.ac.ebi.pride.archive.repo.client.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Collections;
 import java.util.Map;
 
+/**
+ * This class handles all the GET, POST, PUT, DELETE requests to the PRIDE repo API
+ */
 @Slf4j
 public class PrideRepoRestClient {
 
@@ -16,6 +22,12 @@ public class PrideRepoRestClient {
     private final String apiKeyName;
     private final String apiKeyValue;
 
+    /**
+     * Constructor
+     * @param baseUrl PRIDE Repo REST API base URL
+     * @param apiKeyName API key
+     * @param apiKeyValue API secret
+     */
     public PrideRepoRestClient(String baseUrl, String apiKeyName, String apiKeyValue) {
         this.restTemplate = new RestTemplate();
         this.baseUrl = baseUrl;
@@ -23,18 +35,34 @@ public class PrideRepoRestClient {
         this.apiKeyValue = apiKeyValue;
     }
 
-    //TODO retry logics
-    public String sendGetRequestWithRetry(String url, Map<String, String> params) {
-        return makeGetRequest(url, params);
+    /**
+     * This method construct the URL with URI parameters and Query parameters and
+     * perform a get call
+     * //TODO retry logics
+     * @param url Path after the base URL
+     * @param uriParams URI parameters
+     * @param queryParams Query parameters
+     * @return JSON object in String format
+     */
+    public String sendGetRequestWithRetry(String url, Map<String, String> uriParams, MultiValueMap<String, String> queryParams) {
+
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(baseUrl + url);
+        if(queryParams != null){
+            uriBuilder.queryParams(queryParams);
+        }
+        URI completeUrl = (uriParams != null) ? uriBuilder.buildAndExpand(uriParams).toUri():  uriBuilder.build().toUri();
+        log.info("Requesting : " + completeUrl);
+
+        return makeGetRequest(completeUrl);
     }
 
-    //TODO retry logics
-    public String sendGetRequestWithRetry(String url) {
-        return makeGetRequest(url, null);
-    }
-
-    private String makeGetRequest(String url, Map<String, String> params) {
-        ResponseEntity<String> response = null;
+    /**
+     * This method sets HTTP headers, perform the rest call and returns results in String format
+     * @param uri constructed URL with URI and query parameters
+     * @return
+     */
+    private String makeGetRequest(URI uri) {
+        ResponseEntity<String> response;
         try {
             //  create headers
             HttpHeaders headers = new HttpHeaders();
@@ -45,16 +73,12 @@ public class PrideRepoRestClient {
             // build the request
             HttpEntity entity = new HttpEntity(headers);
 
-            // make an HTTP GET request with headers and parameters
-            if (params == null) {
-                response = restTemplate.exchange(baseUrl + url, HttpMethod.GET, entity, String.class);
-            } else {
-                response = restTemplate.exchange(baseUrl + url, HttpMethod.GET, entity, String.class, params);
-            }
+            response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
+
             if (response.getStatusCode() != HttpStatus.OK) {
-                String s = "Received invalid response for : " + url + " : " + response;
-                log.error(s);
-                throw new IllegalStateException(s);
+                String errorMessage = "Received invalid response for : " + uri + " : " + response;
+                log.error(errorMessage);
+                throw new IllegalStateException(errorMessage);
             }
         } catch (RestClientException e) {
             log.error(e.getMessage(), e);
@@ -62,5 +86,4 @@ public class PrideRepoRestClient {
         }
         return response.getBody();
     }
-
 }
