@@ -11,6 +11,7 @@ public class PrideRepoClientFactory {
     private final ProjectRepoClient projectRepoClient;
     private final FileRepoClient fileRepoClient;
     private final AssayRepoClient assayRepoClient;
+    private final StatRepoClient statRepoClient;
 
     public PrideRepoClientFactory(String apiBaseUrl, String apiKeyName, String apiKeyValue) {
         this.prideRepoRestClient = new PrideRepoRestClient(apiBaseUrl, apiKeyName, apiKeyValue);
@@ -19,6 +20,7 @@ public class PrideRepoClientFactory {
         this.projectRepoClient = new ProjectRepoClient(jacksonObjectMapper, prideRepoRestClient);
         this.fileRepoClient = new FileRepoClient(jacksonObjectMapper, prideRepoRestClient);
         this.assayRepoClient = new AssayRepoClient(jacksonObjectMapper, prideRepoRestClient);
+        this.statRepoClient = new StatRepoClient(jacksonObjectMapper, prideRepoRestClient);
     }
 
     public ProjectRepoClient getProjectRepoClient() {
@@ -32,6 +34,8 @@ public class PrideRepoClientFactory {
     public AssayRepoClient getAssayRepoClient() {
         return assayRepoClient;
     }
+
+    public StatRepoClient getStatRepoClient() { return statRepoClient; }
 
     public ObjectMapper getJacksonObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();
