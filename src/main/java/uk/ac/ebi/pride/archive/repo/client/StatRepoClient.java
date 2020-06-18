@@ -3,6 +3,7 @@ package uk.ac.ebi.pride.archive.repo.client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import uk.ac.ebi.pride.archive.repo.client.utils.PrideRepoRestClient;
+import uk.ac.ebi.pride.archive.repo.client.utils.Utils;
 import uk.ac.ebi.pride.archive.repo.models.stats.StatisticsSummary;
 
 import java.io.IOException;
@@ -15,8 +16,8 @@ public class StatRepoClient {
 
     private static final String STAT_URL_PATH = "/stats";
 
-    StatRepoClient(ObjectMapper objectMapper, PrideRepoRestClient prideRepoRestClient) {
-        this.objectMapper = objectMapper;
+    StatRepoClient(PrideRepoRestClient prideRepoRestClient) {
+        this.objectMapper = Utils.getJacksonObjectMapper();
         this.prideRepoRestClient = prideRepoRestClient;
     }
 

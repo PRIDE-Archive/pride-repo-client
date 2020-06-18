@@ -2,6 +2,7 @@ package uk.ac.ebi.pride.archive.repo.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import uk.ac.ebi.pride.archive.repo.client.utils.PrideRepoRestClient;
+import uk.ac.ebi.pride.archive.repo.client.utils.Utils;
 import uk.ac.ebi.pride.archive.repo.models.file.ProjectFile;
 
 import java.io.IOException;
@@ -17,8 +18,8 @@ public class FileRepoClient {
 
     private static final String FILE_URL_PATH = "/files";
 
-    FileRepoClient(ObjectMapper objectMapper, PrideRepoRestClient prideRepoRestClient) {
-        this.objectMapper = objectMapper;
+    FileRepoClient(PrideRepoRestClient prideRepoRestClient) {
+        this.objectMapper = Utils.getJacksonObjectMapper();
         this.prideRepoRestClient = prideRepoRestClient;
     }
 

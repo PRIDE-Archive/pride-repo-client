@@ -2,6 +2,7 @@ package uk.ac.ebi.pride.archive.repo.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import uk.ac.ebi.pride.archive.repo.client.utils.PrideRepoRestClient;
+import uk.ac.ebi.pride.archive.repo.client.utils.Utils;
 import uk.ac.ebi.pride.archive.repo.models.assay.Assay;
 
 import java.io.IOException;
@@ -17,8 +18,8 @@ public class AssayRepoClient {
 
     private static final String ASSAY_URL_PATH = "/assay";
 
-    AssayRepoClient(ObjectMapper objectMapper, PrideRepoRestClient prideRepoRestClient) {
-        this.objectMapper = objectMapper;
+    AssayRepoClient(PrideRepoRestClient prideRepoRestClient) {
+        this.objectMapper = Utils.getJacksonObjectMapper();
         this.prideRepoRestClient = prideRepoRestClient;
     }
 
