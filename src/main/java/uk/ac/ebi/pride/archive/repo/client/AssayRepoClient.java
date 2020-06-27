@@ -1,5 +1,6 @@
 package uk.ac.ebi.pride.archive.repo.client;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import uk.ac.ebi.pride.archive.repo.client.utils.PrideRepoRestClient;
 import uk.ac.ebi.pride.archive.repo.client.utils.Utils;
@@ -79,5 +80,14 @@ public class AssayRepoClient {
         String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
         Long count = objectMapper.readValue(response, Long.class);
         return count;
+    }
+
+    public Assay saveAssay(Assay assay) throws JsonProcessingException {
+        final String url = ASSAY_URL_PATH + "/save";
+
+        String payload = objectMapper.writeValueAsString(assay);
+        String response = prideRepoRestClient.sendPostRequest(url, payload);
+
+        return objectMapper.readValue(response, Assay.class);
     }
 }

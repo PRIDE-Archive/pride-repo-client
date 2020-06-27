@@ -1,8 +1,10 @@
 package uk.ac.ebi.pride.archive.repo.client;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import uk.ac.ebi.pride.archive.repo.client.utils.PrideRepoRestClient;
 import uk.ac.ebi.pride.archive.repo.client.utils.Utils;
+import uk.ac.ebi.pride.archive.repo.models.assay.Assay;
 import uk.ac.ebi.pride.archive.repo.models.file.ProjectFile;
 
 import java.io.IOException;
@@ -80,5 +82,14 @@ public class FileRepoClient {
         String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
         List<ProjectFile> projectFiles = objectMapper.readValue(response, List.class);
         return projectFiles;
+    }
+
+    public ProjectFile saveFile(ProjectFile file) throws JsonProcessingException {
+        final String url = FILE_URL_PATH + "/save";
+
+        String payload = objectMapper.writeValueAsString(file);
+        String response = prideRepoRestClient.sendPostRequest(url, payload);
+
+        return objectMapper.readValue(response, ProjectFile.class);
     }
 }

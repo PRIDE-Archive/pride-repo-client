@@ -35,6 +35,32 @@ public class PrideRepoRestClient {
         this.apiKeyValue = apiKeyValue;
     }
 
+    public String sendPostRequest(String url, String payload) {
+        ResponseEntity<String> response;
+        try {
+            //  create headers
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.set(apiKeyName, apiKeyValue);
+
+            // build the request
+            HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(payload, headers);
+
+            response = restTemplate.exchange(url, HttpMethod.GET, requestEntity, String.class);
+
+            if (response.getStatusCode() != HttpStatus.OK) {
+                String errorMessage = "[POST] Received invalid response for : " + url + " : " + response;
+                log.error(errorMessage);
+                throw new IllegalStateException(errorMessage);
+            }
+        } catch (RestClientException e) {
+            log.error(e.getMessage(), e);
+            throw e;
+        }
+        return response.getBody();
+    }
+
     /**
      * This method construct the URL with URI parameters and Query parameters and
      * perform a get call
@@ -76,7 +102,7 @@ public class PrideRepoRestClient {
             response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
 
             if (response.getStatusCode() != HttpStatus.OK) {
-                String errorMessage = "Received invalid response for : " + uri + " : " + response;
+                String errorMessage = "[GET] Received invalid response for : " + uri + " : " + response;
                 log.error(errorMessage);
                 throw new IllegalStateException(errorMessage);
             }

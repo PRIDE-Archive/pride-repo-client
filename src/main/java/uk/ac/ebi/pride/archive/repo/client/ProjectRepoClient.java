@@ -1,11 +1,13 @@
 package uk.ac.ebi.pride.archive.repo.client;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import uk.ac.ebi.pride.archive.repo.client.utils.PrideRepoRestClient;
 import uk.ac.ebi.pride.archive.repo.client.utils.Utils;
+import uk.ac.ebi.pride.archive.repo.models.file.ProjectFile;
 import uk.ac.ebi.pride.archive.repo.models.project.Project;
 
 import java.io.IOException;
@@ -131,6 +133,15 @@ public class ProjectRepoClient {
         String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
         List<Project> projects = objectMapper.readValue(response, List.class);
         return projects;
+    }
+
+    public Project saveProject(Project project) throws JsonProcessingException {
+        final String url = PROJECT_URL_PATH + "/save";
+
+        String payload = objectMapper.writeValueAsString(project);
+        String response = prideRepoRestClient.sendPostRequest(url, payload);
+
+        return objectMapper.readValue(response, Project.class);
     }
 }
 
