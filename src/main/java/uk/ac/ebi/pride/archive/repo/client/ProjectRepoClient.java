@@ -135,7 +135,7 @@ public class ProjectRepoClient {
         return projects;
     }
 
-    public Project saveProject(Project project) throws JsonProcessingException {
+    public Project save(Project project) throws JsonProcessingException {
         final String url = PROJECT_URL_PATH + "/save";
 
         String payload = objectMapper.writeValueAsString(project);

@@ -84,7 +84,7 @@ public class FileRepoClient {
         return projectFiles;
     }
 
-    public ProjectFile saveFile(ProjectFile file) throws JsonProcessingException {
+    public ProjectFile save(ProjectFile file) throws JsonProcessingException {
         final String url = FILE_URL_PATH + "/save";
 
         String payload = objectMapper.writeValueAsString(file);

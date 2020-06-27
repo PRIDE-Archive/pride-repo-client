@@ -82,7 +82,7 @@ public class AssayRepoClient {
         return count;
     }
 
-    public Assay saveAssay(Assay assay) throws JsonProcessingException {
+    public Assay save(Assay assay) throws JsonProcessingException {
         final String url = ASSAY_URL_PATH + "/save";
 
         String payload = objectMapper.writeValueAsString(assay);
