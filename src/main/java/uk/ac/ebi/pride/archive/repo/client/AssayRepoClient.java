@@ -1,6 +1,7 @@
 package uk.ac.ebi.pride.archive.repo.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import uk.ac.ebi.pride.archive.repo.client.utils.PrideRepoRestClient;
 import uk.ac.ebi.pride.archive.repo.client.utils.Utils;
@@ -56,7 +57,7 @@ public class AssayRepoClient {
         uriParams.put("projectId", projectId.toString());
 
         String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
-        List<Assay> assays = objectMapper.readValue(response, List.class);
+        List<Assay> assays = objectMapper.readValue(response, new TypeReference<List<Assay>>(){} );
         return assays;
     }
 
@@ -67,7 +68,7 @@ public class AssayRepoClient {
         uriParams.put("projectAccession", projectAccession);
 
         String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
-        List<Assay> assays = objectMapper.readValue(response, List.class);
+        List<Assay> assays = objectMapper.readValue(response, new TypeReference<List<Assay>>(){} );
         return assays;
     }
 

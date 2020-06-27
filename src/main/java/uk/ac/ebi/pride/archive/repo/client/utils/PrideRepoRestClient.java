@@ -24,8 +24,9 @@ public class PrideRepoRestClient {
 
     /**
      * Constructor
-     * @param baseUrl PRIDE Repo REST API base URL
-     * @param apiKeyName API key
+     *
+     * @param baseUrl     PRIDE Repo REST API base URL
+     * @param apiKeyName  API key
      * @param apiKeyValue API secret
      */
     public PrideRepoRestClient(String baseUrl, String apiKeyName, String apiKeyValue) {
@@ -36,6 +37,7 @@ public class PrideRepoRestClient {
     }
 
     public String sendPostRequest(String url, String payload) {
+        url = baseUrl + url;
         ResponseEntity<String> response;
         try {
             //  create headers
@@ -47,7 +49,7 @@ public class PrideRepoRestClient {
             // build the request
             HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(payload, headers);
 
-            response = restTemplate.exchange(url, HttpMethod.GET, requestEntity, String.class);
+            response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
 
             if (response.getStatusCode() != HttpStatus.OK) {
                 String errorMessage = "[POST] Received invalid response for : " + url + " : " + response;
@@ -65,18 +67,19 @@ public class PrideRepoRestClient {
      * This method construct the URL with URI parameters and Query parameters and
      * perform a get call
      * //TODO retry logics
-     * @param url Path after the base URL
-     * @param uriParams URI parameters
+     *
+     * @param url         Path after the base URL
+     * @param uriParams   URI parameters
      * @param queryParams Query parameters
      * @return JSON object in String format
      */
     public String sendGetRequestWithRetry(String url, Map<String, String> uriParams, MultiValueMap<String, String> queryParams) {
 
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(baseUrl + url);
-        if(queryParams != null){
+        if (queryParams != null) {
             uriBuilder.queryParams(queryParams);
         }
-        URI completeUrl = (uriParams != null) ? uriBuilder.buildAndExpand(uriParams).toUri():  uriBuilder.build().toUri();
+        URI completeUrl = (uriParams != null) ? uriBuilder.buildAndExpand(uriParams).toUri() : uriBuilder.build().toUri();
         log.info("Requesting : " + completeUrl);
 
         return makeGetRequest(completeUrl);
@@ -84,6 +87,7 @@ public class PrideRepoRestClient {
 
     /**
      * This method sets HTTP headers, perform the rest call and returns results in String format
+     *
      * @param uri constructed URL with URI and query parameters
      * @return
      */

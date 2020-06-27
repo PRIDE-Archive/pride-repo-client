@@ -1,6 +1,7 @@
 package uk.ac.ebi.pride.archive.repo.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import uk.ac.ebi.pride.archive.repo.client.utils.PrideRepoRestClient;
 import uk.ac.ebi.pride.archive.repo.client.utils.Utils;
@@ -47,7 +48,7 @@ public class FileRepoClient {
         uriParams.put("projectId", projectId.toString());
 
         String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
-        List<ProjectFile> projectFiles = objectMapper.readValue(response, List.class);
+        List<ProjectFile> projectFiles = objectMapper.readValue(response, new TypeReference<List<ProjectFile>>(){} );
         return projectFiles;
     }
 
@@ -58,7 +59,7 @@ public class FileRepoClient {
         uriParams.put("projectAccession", projectAccession);
 
         String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
-        List<ProjectFile> projectFiles = objectMapper.readValue(response, List.class);
+        List<ProjectFile> projectFiles = objectMapper.readValue(response, new TypeReference<List<ProjectFile>>(){} );
         return projectFiles;
     }
 
@@ -69,7 +70,7 @@ public class FileRepoClient {
         uriParams.put("assayId", assayId.toString());
 
         String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
-        List<ProjectFile> projectFiles = objectMapper.readValue(response, List.class);
+        List<ProjectFile> projectFiles = objectMapper.readValue(response, new TypeReference<List<ProjectFile>>(){} );
         return projectFiles;
     }
 
@@ -80,7 +81,7 @@ public class FileRepoClient {
         uriParams.put("assayAccession", assayAccession);
 
         String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
-        List<ProjectFile> projectFiles = objectMapper.readValue(response, List.class);
+        List<ProjectFile> projectFiles = objectMapper.readValue(response, new TypeReference<List<ProjectFile>>(){} );
         return projectFiles;
     }
 

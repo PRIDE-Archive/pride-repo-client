@@ -1,6 +1,7 @@
 package uk.ac.ebi.pride.archive.repo.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.LinkedMultiValueMap;
@@ -105,7 +106,7 @@ public class ProjectRepoClient {
 
 
         String response = prideRepoRestClient.sendGetRequestWithRetry(url, null, queryParams);
-        List<Project> projects = objectMapper.readValue(response, List.class);
+        List<Project> projects = objectMapper.readValue(response, new TypeReference<List<Project>>(){} );
         return projects;
     }
 
@@ -118,7 +119,7 @@ public class ProjectRepoClient {
         uriParams.put("submitterId", submitterId.toString());
 
         String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
-        List<Project> projects = objectMapper.readValue(response, List.class);
+        List<Project> projects = objectMapper.readValue(response, new TypeReference<List<Project>>(){} );
         return projects;
     }
 
@@ -131,7 +132,7 @@ public class ProjectRepoClient {
         uriParams.put("user_aap_ref", userAapRef);
 
         String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
-        List<Project> projects = objectMapper.readValue(response, List.class);
+        List<Project> projects = objectMapper.readValue(response, new TypeReference<List<Project>>(){} );
         return projects;
     }
 
