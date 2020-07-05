@@ -10,6 +10,7 @@ public class PrideRepoClientFactory {
     private AssayRepoClient assayRepoClient = null;
     private StatRepoClient statRepoClient = null;
     private UserRepoClient userRepoClient = null;
+    private CvParamRepoClient cvParamRepoClient = null;
 
     public PrideRepoClientFactory(String apiBaseUrl, String apiKeyName, String apiKeyValue) {
         this.prideRepoRestClient = new PrideRepoRestClient(apiBaseUrl, apiKeyName, apiKeyValue);
@@ -48,6 +49,13 @@ public class PrideRepoClientFactory {
             this.userRepoClient = new UserRepoClient(prideRepoRestClient);
         }
         return userRepoClient;
+    }
+
+    public CvParamRepoClient getCvParamRepoClient() {
+        if (cvParamRepoClient == null) {
+            this.cvParamRepoClient = new CvParamRepoClient(prideRepoRestClient);
+        }
+        return cvParamRepoClient;
     }
 
 }
