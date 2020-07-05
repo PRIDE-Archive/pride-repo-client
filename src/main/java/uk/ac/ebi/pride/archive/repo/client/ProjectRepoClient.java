@@ -8,7 +8,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import uk.ac.ebi.pride.archive.repo.client.utils.PrideRepoRestClient;
 import uk.ac.ebi.pride.archive.repo.client.utils.Utils;
-import uk.ac.ebi.pride.archive.repo.models.file.ProjectFile;
 import uk.ac.ebi.pride.archive.repo.models.project.Project;
 
 import java.io.IOException;
@@ -143,6 +142,13 @@ public class ProjectRepoClient {
         String response = prideRepoRestClient.sendPostRequest(url, payload);
 
         return objectMapper.readValue(response, Project.class);
+    }
+
+    public void delete(Project project) throws JsonProcessingException {
+        final String url = PROJECT_URL_PATH + "/delete";
+
+        String payload = objectMapper.writeValueAsString(project);
+        prideRepoRestClient.sendDeleteRequest(url, payload);
     }
 }
 

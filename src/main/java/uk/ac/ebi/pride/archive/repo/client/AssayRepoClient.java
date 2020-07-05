@@ -91,4 +91,11 @@ public class AssayRepoClient {
 
         return objectMapper.readValue(response, Assay.class);
     }
+
+    public void delete(Assay assay) throws JsonProcessingException {
+        final String url = ASSAY_URL_PATH + "/delete";
+
+        String payload = objectMapper.writeValueAsString(assay);
+        prideRepoRestClient.sendDeleteRequest(url, payload);
+    }
 }
