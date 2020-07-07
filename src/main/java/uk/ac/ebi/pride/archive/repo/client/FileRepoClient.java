@@ -46,8 +46,7 @@ public class FileRepoClient {
         uriParams.put("projectId", projectId.toString());
 
         String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
-        List<ProjectFile> projectFiles = objectMapper.readValue(response, new TypeReference<List<ProjectFile>>(){} );
-        return projectFiles;
+        return objectMapper.readValue(response, new TypeReference<List<ProjectFile>>(){} );
     }
 
     public List<ProjectFile> findAllByProjectAccession(String projectAccession) throws IOException {
@@ -57,8 +56,7 @@ public class FileRepoClient {
         uriParams.put("projectAccession", projectAccession);
 
         String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
-        List<ProjectFile> projectFiles = objectMapper.readValue(response, new TypeReference<List<ProjectFile>>(){} );
-        return projectFiles;
+        return objectMapper.readValue(response, new TypeReference<List<ProjectFile>>(){} );
     }
 
     public List<ProjectFile> findAllByAssayId(Long assayId) throws IOException {
@@ -68,8 +66,7 @@ public class FileRepoClient {
         uriParams.put("assayId", assayId.toString());
 
         String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
-        List<ProjectFile> projectFiles = objectMapper.readValue(response, new TypeReference<List<ProjectFile>>(){} );
-        return projectFiles;
+        return objectMapper.readValue(response, new TypeReference<List<ProjectFile>>(){} );
     }
 
     public List<ProjectFile> findAllByAssayAccession(String assayAccession) throws IOException {
@@ -79,8 +76,7 @@ public class FileRepoClient {
         uriParams.put("assayAccession", assayAccession);
 
         String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
-        List<ProjectFile> projectFiles = objectMapper.readValue(response, new TypeReference<List<ProjectFile>>(){} );
-        return projectFiles;
+        return objectMapper.readValue(response, new TypeReference<List<ProjectFile>>(){} );
     }
 
     public ProjectFile save(ProjectFile file) throws JsonProcessingException {
@@ -90,6 +86,16 @@ public class FileRepoClient {
         String response = prideRepoRestClient.sendPostRequest(url, payload);
 
         return objectMapper.readValue(response, ProjectFile.class);
+    }
+
+    //to support saving all files in single transaction
+    public List<ProjectFile> saveMultiple(List<ProjectFile> files) throws JsonProcessingException {
+        final String url = FILE_URL_PATH + "/saveMultiple";
+
+        String payload = objectMapper.writeValueAsString(files);
+        String response = prideRepoRestClient.sendPostRequest(url, payload);
+
+        return objectMapper.readValue(response, new TypeReference<List<ProjectFile>>(){} );
     }
 
     public void delete(ProjectFile file) throws JsonProcessingException {
