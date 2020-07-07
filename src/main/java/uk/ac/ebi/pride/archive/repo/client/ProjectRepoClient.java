@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import uk.ac.ebi.pride.archive.repo.client.utils.PrideRepoRestClient;
 import uk.ac.ebi.pride.archive.repo.client.utils.Utils;
 import uk.ac.ebi.pride.archive.repo.models.project.Project;
 

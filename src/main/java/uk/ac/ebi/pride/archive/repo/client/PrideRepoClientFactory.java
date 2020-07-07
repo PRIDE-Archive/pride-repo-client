@@ -1,7 +1,5 @@
 package uk.ac.ebi.pride.archive.repo.client;
 
-import uk.ac.ebi.pride.archive.repo.client.utils.PrideRepoRestClient;
-
 public class PrideRepoClientFactory {
 
     private final PrideRepoRestClient prideRepoRestClient;
@@ -11,6 +9,7 @@ public class PrideRepoClientFactory {
     private StatRepoClient statRepoClient = null;
     private UserRepoClient userRepoClient = null;
     private CvParamRepoClient cvParamRepoClient = null;
+    private SubmissionRepoClient submissionRepoClient = null;
 
     public PrideRepoClientFactory(String apiBaseUrl, String apiKeyName, String apiKeyValue) {
         this.prideRepoRestClient = new PrideRepoRestClient(apiBaseUrl, apiKeyName, apiKeyValue);
@@ -56,6 +55,13 @@ public class PrideRepoClientFactory {
             this.cvParamRepoClient = new CvParamRepoClient(prideRepoRestClient);
         }
         return cvParamRepoClient;
+    }
+
+    public SubmissionRepoClient getSubmissionRepoClient() {
+        if (submissionRepoClient == null) {
+            this.submissionRepoClient = new SubmissionRepoClient(prideRepoRestClient);
+        }
+        return submissionRepoClient;
     }
 
 }

@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.archive.repo.client.utils;
+package uk.ac.ebi.pride.archive.repo.client;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -15,7 +15,7 @@ import java.util.Map;
  * This class handles all the GET, POST, PUT, DELETE requests to the PRIDE repo API
  */
 @Slf4j
-public class PrideRepoRestClient {
+class PrideRepoRestClient {
 
     private final RestTemplate restTemplate;
     private final String baseUrl;
@@ -29,7 +29,7 @@ public class PrideRepoRestClient {
      * @param apiKeyName  API key
      * @param apiKeyValue API secret
      */
-    public PrideRepoRestClient(String baseUrl, String apiKeyName, String apiKeyValue) {
+    PrideRepoRestClient(String baseUrl, String apiKeyName, String apiKeyValue) {
         this.restTemplate = new RestTemplate();
         this.baseUrl = baseUrl;
         this.apiKeyName = apiKeyName;

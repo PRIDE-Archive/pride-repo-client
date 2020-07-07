@@ -2,7 +2,6 @@ package uk.ac.ebi.pride.archive.repo.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import uk.ac.ebi.pride.archive.repo.client.utils.PrideRepoRestClient;
 import uk.ac.ebi.pride.archive.repo.client.utils.Utils;
 import uk.ac.ebi.pride.archive.repo.models.stats.StatisticsSummary;
 
