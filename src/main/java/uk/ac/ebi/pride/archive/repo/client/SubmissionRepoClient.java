@@ -3,7 +3,7 @@ package uk.ac.ebi.pride.archive.repo.client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import uk.ac.ebi.pride.archive.repo.client.utils.Utils;
-import uk.ac.ebi.pride.archive.repo.models.submission.Submission;
+import uk.ac.ebi.pride.archive.repo.models.submission.SubmissionDto;
 
 public class SubmissionRepoClient {
 
@@ -17,10 +17,10 @@ public class SubmissionRepoClient {
         this.prideRepoRestClient = prideRepoRestClient;
     }
 
-    public void save(Submission submission) throws JsonProcessingException {
+    public void save(SubmissionDto submissionDto) throws JsonProcessingException {
         final String url = SUBMISSION_URL_PATH + "/save";
 
-        String payload = objectMapper.writeValueAsString(submission);
+        String payload = objectMapper.writeValueAsString(submissionDto);
         prideRepoRestClient.sendPostRequest(url, payload);
     }
 }
