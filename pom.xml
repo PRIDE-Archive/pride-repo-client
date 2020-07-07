@@ -9,8 +9,8 @@
         <relativePath/>
     </parent>
 
-    <groupId>uk.ac.ebi.pride.repoclient</groupId>
-    <artifactId>pride-repo</artifactId>
+    <groupId>uk.ac.ebi.pride.archive</groupId>
+    <artifactId>pride-repo-client</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>pride-repo</name>
     <description>PRIDE Repo Client</description>
