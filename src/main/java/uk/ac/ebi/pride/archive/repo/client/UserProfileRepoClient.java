@@ -3,6 +3,7 @@ package uk.ac.ebi.pride.archive.repo.client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import uk.ac.ebi.pride.archive.repo.client.utils.Utils;
 import uk.ac.ebi.pride.archive.repo.models.user.Credentials;
+import uk.ac.ebi.pride.archive.repo.models.user.User;
 import uk.ac.ebi.pride.archive.repo.models.user.UserProfile;
 import uk.ac.ebi.pride.archive.repo.models.user.UserSummary;
 
@@ -26,11 +27,11 @@ public class UserProfileRepoClient {
         return objectMapper.readValue(response, String.class);
     }
 
-    public String register(UserSummary userSummary) throws Exception {
+    public User register(UserSummary userSummary) throws Exception {
         final String url = USER_PROFILE_URL_PATH + "/register";
         String payload = objectMapper.writeValueAsString(userSummary);
         String response = prideRepoRestClient.sendPostRequest(url, payload);
-        return objectMapper.readValue(response, String.class);
+        return objectMapper.readValue(response, User.class);
     }
 
     public String viewProfile(String jwtToken) throws Exception {
