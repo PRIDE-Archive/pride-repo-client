@@ -12,8 +12,14 @@ public class PrideRepoClientFactory {
     private CvParamRepoClient cvParamRepoClient = null;
     private SubmissionRepoClient submissionRepoClient = null;
 
-    public PrideRepoClientFactory(String apiBaseUrl, String apiKeyName, String apiKeyValue) {
-        this.prideRepoRestClient = new PrideRepoRestClient(apiBaseUrl, apiKeyName, apiKeyValue);
+    /**
+     * @param apiBaseUrl API base url of Repo-WS
+     * @param apiKeyName Name of API key
+     * @param apiKeyValue Value of API key
+     * @param appName The name of APP that is initiating this. For Logging & Debug purposes.
+     */
+    public PrideRepoClientFactory(String apiBaseUrl, String apiKeyName, String apiKeyValue, String appName) {
+        this.prideRepoRestClient = new PrideRepoRestClient(apiBaseUrl, apiKeyName, apiKeyValue, appName);
     }
 
     public ProjectRepoClient getProjectRepoClient() {

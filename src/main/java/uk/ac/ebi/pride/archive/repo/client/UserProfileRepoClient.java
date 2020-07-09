@@ -35,14 +35,14 @@ public class UserProfileRepoClient {
 
     public String viewProfile(String jwtToken) throws Exception {
         final String url = USER_PROFILE_URL_PATH + "/view-profile";
-        String response = prideRepoRestClient.sendPostRequestWithJwtAuthorization(url, "", jwtToken);
+        String response = prideRepoRestClient.sendGetRequestWithRetry(url, null, null);
         return objectMapper.readValue(response, String.class);
     }
 
     public String updateProfile(UserProfile userProfile, String jwtToken) throws Exception {
         final String url = USER_PROFILE_URL_PATH + "/update-profile";
         String payload = objectMapper.writeValueAsString(userProfile);
-        String response = prideRepoRestClient.sendPostRequestWithJwtAuthorization(url, payload, jwtToken);
+        String response = prideRepoRestClient.sendPostRequest(url, payload);
         return objectMapper.readValue(response, String.class);
     }
 

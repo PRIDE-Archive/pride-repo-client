@@ -21,19 +21,21 @@ class PrideRepoRestClient {
     private final String baseUrl;
     private final String apiKeyName;
     private final String apiKeyValue;
+    private final String appName;
 
     /**
      * Constructor
-     *
      * @param baseUrl     PRIDE Repo REST API base URL
      * @param apiKeyName  API key
      * @param apiKeyValue API secret
+     * @param appName The name of APP that is calling these REST APIs. For Logging & Debug purposes.
      */
-    PrideRepoRestClient(String baseUrl, String apiKeyName, String apiKeyValue) {
+    PrideRepoRestClient(String baseUrl, String apiKeyName, String apiKeyValue, String appName) {
         this.restTemplate = new RestTemplate();
         this.baseUrl = baseUrl;
         this.apiKeyName = apiKeyName;
         this.apiKeyValue = apiKeyValue;
+        this.appName = appName;
     }
 
     public String sendPostRequest(String url, String payload) {
@@ -45,6 +47,7 @@ class PrideRepoRestClient {
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
             headers.set(apiKeyName, apiKeyValue);
+            headers.set("app", appName);
 
             // build the request
             HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(payload, headers);
@@ -72,6 +75,7 @@ class PrideRepoRestClient {
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
             headers.set(apiKeyName, apiKeyValue);
+            headers.set("app", appName);
 
             // build the request
             HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(payload, headers);
@@ -126,6 +130,7 @@ class PrideRepoRestClient {
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
             headers.set(apiKeyName, apiKeyValue);
+            headers.set("app", appName);
 
             // build the request
             HttpEntity entity = new HttpEntity(headers);
@@ -134,33 +139,6 @@ class PrideRepoRestClient {
 
             if (response.getStatusCode() != HttpStatus.OK) {
                 String errorMessage = "[GET] Received invalid response for : " + uri + " : " + response;
-                log.error(errorMessage);
-                throw new IllegalStateException(errorMessage);
-            }
-        } catch (RestClientException e) {
-            log.error(e.getMessage(), e);
-            throw e;
-        }
-        return response.getBody();
-    }
-
-    public String sendPostRequestWithJwtAuthorization(String url, String payload, String jwtToken) {
-        url = baseUrl + url;
-        ResponseEntity<String> response;
-        try {
-            //  create headers
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-            headers.set("Authorization", "Bearer " + jwtToken);
-
-            // build the request
-            HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(payload, headers);
-
-            response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
-
-            if (response.getStatusCode() != HttpStatus.OK) {
-                String errorMessage = "[POST] Received invalid response for : " + url + " : " + response;
                 log.error(errorMessage);
                 throw new IllegalStateException(errorMessage);
             }
