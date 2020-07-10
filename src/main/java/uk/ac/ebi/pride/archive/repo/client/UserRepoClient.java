@@ -96,10 +96,7 @@ public class UserRepoClient {
 
     public User createReviewerAccount(String projectAccession) throws Exception {
         final String url = USER_URL_PATH + "/createReviewer";
-        Map requestParams = new HashMap();
-        requestParams.put("projectAccession", projectAccession);
-        String payload = objectMapper.writeValueAsString(requestParams);
-        String response = prideRepoRestClient.sendPostRequest(url, payload);
+        String response = prideRepoRestClient.sendPostRequest(url, projectAccession);
         return objectMapper.readValue(response, User.class);
     }
 
