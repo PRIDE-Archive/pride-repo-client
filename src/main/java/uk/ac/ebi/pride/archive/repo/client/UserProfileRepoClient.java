@@ -34,17 +34,17 @@ public class UserProfileRepoClient {
         return objectMapper.readValue(response, User.class);
     }
 
-    public String viewProfile(String jwtToken) throws Exception {
+    public UserSummary viewProfile(String jwtToken) throws Exception {
         final String url = USER_PROFILE_URL_PATH + "/view-profile";
-        String response = prideRepoRestClient.sendGetRequestWithRetry(url, null, null);
-        return objectMapper.readValue(response, String.class);
+        String response = prideRepoRestClient.sendPostRequestWithJwtAuthorization(url, null, jwtToken);
+        return objectMapper.readValue(response, UserSummary.class);
     }
 
-    public String updateProfile(UserProfile userProfile, String jwtToken) throws Exception {
+    public Boolean updateProfile(UserProfile userProfile, String jwtToken) throws Exception {
         final String url = USER_PROFILE_URL_PATH + "/update-profile";
         String payload = objectMapper.writeValueAsString(userProfile);
-        String response = prideRepoRestClient.sendPostRequest(url, payload);
-        return objectMapper.readValue(response, String.class);
+        String response = prideRepoRestClient.sendPostRequestWithJwtAuthorization(url, payload, jwtToken);
+        return objectMapper.readValue(response, Boolean.class);
     }
 
 }
