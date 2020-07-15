@@ -23,8 +23,7 @@ public class UserProfileRepoClient {
         final String url = USER_PROFILE_URL_PATH + "/getAAPToken";
 
         String payload = objectMapper.writeValueAsString(credentials);
-        String response = prideRepoRestClient.sendPostRequest(url, payload);
-        return objectMapper.readValue(response, String.class);
+        return prideRepoRestClient.sendPostRequest(url, payload);
     }
 
     public User register(UserSummary userSummary) throws Exception {
