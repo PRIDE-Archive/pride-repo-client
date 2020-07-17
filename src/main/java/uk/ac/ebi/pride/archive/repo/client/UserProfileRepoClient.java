@@ -2,10 +2,7 @@ package uk.ac.ebi.pride.archive.repo.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import uk.ac.ebi.pride.archive.repo.client.utils.Utils;
-import uk.ac.ebi.pride.archive.repo.models.user.Credentials;
-import uk.ac.ebi.pride.archive.repo.models.user.User;
-import uk.ac.ebi.pride.archive.repo.models.user.UserProfile;
-import uk.ac.ebi.pride.archive.repo.models.user.UserSummary;
+import uk.ac.ebi.pride.archive.repo.models.user.*;
 
 public class UserProfileRepoClient {
 
@@ -46,4 +43,9 @@ public class UserProfileRepoClient {
         return objectMapper.readValue(response, Boolean.class);
     }
 
+    public String resetPassword(ResetPassword resetPassword) throws Exception {
+        final String url = USER_PROFILE_URL_PATH + "/reset-password";
+        String payload = objectMapper.writeValueAsString(resetPassword);
+        return prideRepoRestClient.sendPostRequest(url, payload);
+    }
 }
