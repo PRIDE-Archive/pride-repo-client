@@ -88,13 +88,13 @@ public class UserRepoClient {
     }
 
     public User findByUserRef(String userRef) throws IOException {
-        final String url = USER_URL_PATH + "/findByUserRef";
+        final String url = USER_URL_PATH + "/findByUserRef/{userRef}";
         // set uri parameters
         Map<String, String> uriParams = new HashMap<>();
         uriParams.put("userRef", userRef);
 
         String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
-        User user = (User) objectMapper.readValue(response, List.class);
+        User user = objectMapper.readValue(response, User.class);
         return user;
     }
 
