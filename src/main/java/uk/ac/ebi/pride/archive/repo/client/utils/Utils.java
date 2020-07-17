@@ -11,7 +11,7 @@ public class Utils {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new Jdk8Module());
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
+//        mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 //        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 //        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
