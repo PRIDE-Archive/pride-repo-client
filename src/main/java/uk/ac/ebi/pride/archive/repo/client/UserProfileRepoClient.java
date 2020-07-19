@@ -2,7 +2,12 @@ package uk.ac.ebi.pride.archive.repo.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import uk.ac.ebi.pride.archive.repo.client.utils.Utils;
-import uk.ac.ebi.pride.archive.repo.models.user.*;
+import uk.ac.ebi.pride.archive.repo.models.user.ChangePassword;
+import uk.ac.ebi.pride.archive.repo.models.user.Credentials;
+import uk.ac.ebi.pride.archive.repo.models.user.ResetPassword;
+import uk.ac.ebi.pride.archive.repo.models.user.User;
+import uk.ac.ebi.pride.archive.repo.models.user.UserProfile;
+import uk.ac.ebi.pride.archive.repo.models.user.UserSummary;
 
 public class UserProfileRepoClient {
 
@@ -41,6 +46,13 @@ public class UserProfileRepoClient {
         String payload = objectMapper.writeValueAsString(userProfile);
         String response = prideRepoRestClient.sendPostRequestWithJwtAuthorization(url, payload, jwtToken);
         return objectMapper.readValue(response, Boolean.class);
+    }
+
+    public UserSummary changePassword(ChangePassword changePassword, String jwtToken) throws Exception {
+        final String url = USER_PROFILE_URL_PATH + "/change-password";
+        String payload = objectMapper.writeValueAsString(changePassword);
+        String response = prideRepoRestClient.sendPostRequestWithJwtAuthorization(url, payload, jwtToken);
+        return objectMapper.readValue(response, UserSummary.class);
     }
 
     public String resetPassword(ResetPassword resetPassword) throws Exception {
