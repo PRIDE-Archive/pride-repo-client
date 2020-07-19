@@ -3,6 +3,7 @@ package uk.ac.ebi.pride.archive.repo.client;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -48,6 +49,7 @@ class PrideRepoRestClient {
             // build the request
             HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(payload, headers);
 
+            log.info("POST Request : " + url);
             response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
 
             if (response.getStatusCode() != HttpStatus.OK) {
@@ -55,6 +57,8 @@ class PrideRepoRestClient {
                 log.error(errorMessage);
                 throw new IllegalStateException(errorMessage);
             }
+        } catch (HttpStatusCodeException e) {
+            throw e;
         } catch (RestClientException e) {
             log.error(e.getMessage(), e);
             throw e;
@@ -72,6 +76,7 @@ class PrideRepoRestClient {
             // build the request
             HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(payload, headers);
 
+            log.info("DELETE Request : " + url);
             response = restTemplate.exchange(url, HttpMethod.DELETE, requestEntity, String.class);
 
             if (response.getStatusCode() != HttpStatus.OK) {
@@ -79,6 +84,8 @@ class PrideRepoRestClient {
                 log.error(errorMessage);
                 throw new IllegalStateException(errorMessage);
             }
+        } catch (HttpStatusCodeException e) {
+            throw e;
         } catch (RestClientException e) {
             log.error(e.getMessage(), e);
             throw e;
@@ -103,7 +110,6 @@ class PrideRepoRestClient {
             uriBuilder.queryParams(queryParams);
         }
         URI completeUrl = (uriParams != null) ? uriBuilder.buildAndExpand(uriParams).toUri() : uriBuilder.build().toUri();
-        log.info("Requesting : " + completeUrl);
 
         return makeGetRequest(completeUrl);
     }
@@ -123,6 +129,7 @@ class PrideRepoRestClient {
             // build the request
             HttpEntity entity = new HttpEntity(headers);
 
+            log.info("GET Request : " + uri);
             response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
 
             if (response.getStatusCode() != HttpStatus.OK) {
@@ -130,6 +137,8 @@ class PrideRepoRestClient {
                 log.error(errorMessage);
                 throw new IllegalStateException(errorMessage);
             }
+        } catch (HttpStatusCodeException e) {
+            throw e;
         } catch (RestClientException e) {
             log.error(e.getMessage(), e);
             throw e;
@@ -148,6 +157,7 @@ class PrideRepoRestClient {
             // build the request
             HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(payload, headers);
 
+            log.info("Post Request With Jwt: " + url);
             response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
 
             if (response.getStatusCode() != HttpStatus.OK) {
@@ -155,6 +165,8 @@ class PrideRepoRestClient {
                 log.error(errorMessage);
                 throw new IllegalStateException(errorMessage);
             }
+        } catch (HttpStatusCodeException e) {
+            throw e;
         } catch (RestClientException e) {
             log.error(e.getMessage(), e);
             throw e;

@@ -12,7 +12,7 @@
     <groupId>uk.ac.ebi.pride.archive</groupId>
     <artifactId>pride-repo-client</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>pride-repo</name>
+    <name>pride-repo-client</name>
     <description>PRIDE Repo Client</description>
 
     <properties>
