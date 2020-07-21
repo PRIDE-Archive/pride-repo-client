@@ -2,6 +2,7 @@ package uk.ac.ebi.pride.archive.repo.client;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
@@ -9,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.Map;
 
@@ -36,7 +38,9 @@ class PrideRepoRestClient {
         this.baseUrl = baseUrl;
         this.apiKeyName = apiKeyName;
         this.apiKeyValue = apiKeyValue;
+        this.restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
         this.appName = appName;
+
     }
 
     public String sendPostRequest(String url, String payload) {
