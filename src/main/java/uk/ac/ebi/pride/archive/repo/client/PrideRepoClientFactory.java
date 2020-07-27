@@ -11,6 +11,7 @@ public class PrideRepoClientFactory {
     private UserProfileRepoClient userProfileRepoClient = null;
     private CvParamRepoClient cvParamRepoClient = null;
     private SubmissionRepoClient submissionRepoClient = null;
+    private AccessionRepoClient accessionRepoClient = null;
 
     /**
      * @param apiBaseUrl API base url of Repo-WS
@@ -78,4 +79,10 @@ public class PrideRepoClientFactory {
         return submissionRepoClient;
     }
 
+    public AccessionRepoClient getAccessionRepoClient() {
+        if (accessionRepoClient == null) {
+            this.accessionRepoClient = new AccessionRepoClient(prideRepoRestClient);
+        }
+        return accessionRepoClient;
+    }
 }
