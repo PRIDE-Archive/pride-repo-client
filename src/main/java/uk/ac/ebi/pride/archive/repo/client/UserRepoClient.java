@@ -64,7 +64,7 @@ public class UserRepoClient {
         if (response == null || response.equalsIgnoreCase("null")) {
             return Optional.empty();
         }
-        User user = (User) objectMapper.readValue(response, List.class);
+        User user = objectMapper.readValue(response, User.class);
         return Optional.ofNullable(user);
     }
 
