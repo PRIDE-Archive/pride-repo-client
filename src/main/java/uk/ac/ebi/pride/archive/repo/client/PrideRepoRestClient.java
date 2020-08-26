@@ -52,8 +52,8 @@ class PrideRepoRestClient {
 
             // build the request
             HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity(payload, headers);
-
-            log.info("POST Request : " + url);
+            log.info("POST Request : " + url + " - headers: " + headers.toString());
+            log.info("POST Request payload : " + payload);
             response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
 
             if (response.getStatusCode() != HttpStatus.OK) {
@@ -62,6 +62,7 @@ class PrideRepoRestClient {
                 throw new IllegalStateException(errorMessage);
             }
         } catch (HttpStatusCodeException e) {
+            log.error(e.getMessage(), e);
             throw e;
         } catch (RestClientException e) {
             log.error(e.getMessage(), e);
@@ -170,6 +171,7 @@ class PrideRepoRestClient {
                 throw new IllegalStateException(errorMessage);
             }
         } catch (HttpStatusCodeException e) {
+            log.error(e.getMessage(), e);
             throw e;
         } catch (RestClientException e) {
             log.error(e.getMessage(), e);
