@@ -184,7 +184,7 @@ class PrideRepoRestClient {
     private HttpHeaders createHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.setAccept(Collections.singletonList(MediaType.ALL));
         headers.set(apiKeyName, apiKeyValue);
         headers.set("app", appName);
         return headers;
