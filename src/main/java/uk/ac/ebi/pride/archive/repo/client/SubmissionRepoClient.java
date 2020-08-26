@@ -19,8 +19,10 @@ public class SubmissionRepoClient {
 
     public void save(SubmissionDto submissionDto) throws JsonProcessingException {
         final String url = SUBMISSION_URL_PATH + "/save";
-
+        submissionDto.getProject().setId(-1L);
         String payload = objectMapper.writeValueAsString(submissionDto);
+        payload = payload.replaceAll("\"project\":null", "\"project\":-1");
+        payload = payload.replaceAll("\"project\": null", "\"project\":-1");
         prideRepoRestClient.sendPostRequest(url, payload);
     }
 }
