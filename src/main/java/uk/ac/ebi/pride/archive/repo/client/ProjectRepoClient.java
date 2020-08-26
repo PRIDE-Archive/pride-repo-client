@@ -38,7 +38,7 @@ public class ProjectRepoClient {
         uriParams.put("id", id.toString());
 
         String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
-        if (response == null || response.equalsIgnoreCase("null")) {
+        if (response == null || response.equalsIgnoreCase("null") || response.trim().isEmpty()) {
             return Optional.empty();
         }
         Project project = objectMapper.readValue(response, Project.class);
@@ -75,6 +75,9 @@ public class ProjectRepoClient {
         uriParams.put("accession", accession);
 
         String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
+        if (response == null || response.equalsIgnoreCase("null") || response.trim().isEmpty()) {
+            return null;
+        }
         Project project = objectMapper.readValue(response, Project.class);
         return project;
     }
