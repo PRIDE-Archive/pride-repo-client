@@ -140,7 +140,17 @@ public class ProjectRepoClient {
     public Project save(Project project) throws JsonProcessingException {
         final String url = PROJECT_URL_PATH + "/save";
 
+        Long id = project.getId();
+        if (id == null) {
+            id = -1L;
+            project.setId(id);
+        }
+
         String payload = objectMapper.writeValueAsString(project);
+
+        payload = payload.replaceAll("\"project\":null", "\"project\":" + id);//to avoid null constraint checks for foreign keys
+        payload = payload.replaceAll("\"project\": null", "\"project\":" + id);
+
         String response = prideRepoRestClient.sendPostRequest(url, payload);
 
         return objectMapper.readValue(response, Project.class);
