@@ -3,7 +3,6 @@ package uk.ac.ebi.pride.archive.repo.client;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import uk.ac.ebi.pride.archive.repo.client.utils.Utils;
-import uk.ac.ebi.pride.archive.repo.models.project.ProjectSummary;
 import uk.ac.ebi.pride.archive.repo.models.user.User;
 
 import java.io.IOException;
@@ -24,19 +23,19 @@ public class UserRepoClient {
         this.prideRepoRestClient = prideRepoRestClient;
     }
 
-    public Optional<List<ProjectSummary>> findAllProjectsById(Long id) throws IOException {
-        final String url = USER_URL_PATH + "/findAllProjectsById/{id}";
+    public Optional<List<String>> findAllPrivateProjectAccessionsByUserId(Long userId) throws IOException {
+        final String url = USER_URL_PATH + "/findAllPrivateProjectAccessionsByUserId/{userId}";
         // set uri parameters
         Map<String, String> uriParams = new HashMap<>();
-        uriParams.put("id", id.toString());
+        uriParams.put("userId", userId.toString());
 
         String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
         if (response == null || response.equalsIgnoreCase("null")) {
             return Optional.empty();
         }
-        List<ProjectSummary> projectSummaries = objectMapper.readValue(response, new TypeReference<List<ProjectSummary>>() {
+        List<String> projectAccessions = objectMapper.readValue(response, new TypeReference<List<String>>() {
         });
-        return Optional.ofNullable(projectSummaries);
+        return Optional.ofNullable(projectAccessions);
     }
 
     public Optional<List<User>> findAllByProjectId(Long id) throws IOException {
