@@ -12,6 +12,7 @@ public class PrideRepoClientFactory {
     private CvParamRepoClient cvParamRepoClient = null;
     private SubmissionRepoClient submissionRepoClient = null;
     private AccessionRepoClient accessionRepoClient = null;
+    private TicketRepoClient ticketRepoClient = null;
 
     /**
      * @param apiBaseUrl API base url of Repo-WS
@@ -84,5 +85,12 @@ public class PrideRepoClientFactory {
             this.accessionRepoClient = new AccessionRepoClient(prideRepoRestClient);
         }
         return accessionRepoClient;
+    }
+
+    public TicketRepoClient getTicketRepoClient() {
+        if ( ticketRepoClient == null) {
+            this.ticketRepoClient = new TicketRepoClient(prideRepoRestClient);
+        }
+        return ticketRepoClient;
     }
 }
