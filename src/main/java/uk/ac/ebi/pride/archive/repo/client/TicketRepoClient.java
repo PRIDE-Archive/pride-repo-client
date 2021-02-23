@@ -1,12 +1,14 @@
 package uk.ac.ebi.pride.archive.repo.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import uk.ac.ebi.pride.archive.repo.client.utils.Utils;
 import uk.ac.ebi.pride.archive.repo.models.ticket.Ticket;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -62,4 +64,28 @@ public class TicketRepoClient {
 
         return objectMapper.readValue(response, Ticket.class);
     }
+
+    public List<Ticket> findByState(String state) throws IOException {
+
+        final String url = TICKET_URL_PATH + "/findByState/{state}";
+
+        // set uri parameters
+        Map<String, String> uriParams = new HashMap<>();
+        uriParams.put("state", state);
+
+        String response = prideRepoRestClient.sendGetRequestWithRetry(url, uriParams, null);
+        if (response == null || response.equalsIgnoreCase("null") || response.trim().isEmpty()) {
+            return null;
+        }
+        List<Ticket> tickets = objectMapper.readValue(response, new TypeReference<List<Ticket>>(){});
+        return tickets;
+    }
+
+    public void delete(String ticketId) throws JsonProcessingException {
+        final String url = TICKET_URL_PATH + "/deleteById/" + ticketId;
+
+        prideRepoRestClient.sendDeleteRequest(url, null);
+    }
+
+
 }
